@@ -5,6 +5,30 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.all
+
+    @unique_products = 0
+    @products.each do |i|
+      similar_count = 0
+      @products.each do |j|
+        if i.title == j.title
+          similar_count += 1
+        end
+      end
+      if similar_count <= 1
+        @unique_products += 1
+      end
+    end
+
+    sum = 0
+    @products.each do |product|
+      sum += product.price
+    end
+    @average_price = sum / @products.count
+
+    @stock_sum = 0
+    @products.each do |product|
+      @stock_sum += product.stock_quantity
+    end
   end
 
   # GET /products/1
